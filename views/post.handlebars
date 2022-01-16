@@ -1,15 +1,14 @@
 <div class="text-center">
-  <h2>{{title}}</h2>
-  <p>{{description}}</p>
+
+  <h2>Title</h2>
+  <input id= "title" value = "{{title}}">
+  <h3>Description</h3>
+ <input id= "description" value = "{{description}}">
   <p>Created by {{user.username}} : {{format_date date_created}}</p>
   <p>
-    <span for="img" aria-label="money">💲</span>
-    <span class="dollar-amount">{{format_amount needed_funding}}</span>
-    needed
-  </p>
-  <p>
-    <button class="btn btn-primary">Fund this Project!</button>
+    <button class="btn btn-primary" id="edit-btn">Edit Post</button>
   </p>
 </div>
+ 
 
-<script src="/js/editPost.js"></script>
+<script src="/js/updatePost.js"></script>
