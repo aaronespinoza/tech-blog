@@ -9,11 +9,11 @@ router.get('/', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       ],
     });
-
+    console.log(req.session.user_username)
     // Serialize data so the template can read it
     const post = postData.map((post) => post.get({ plain: true }));
 
@@ -33,7 +33,7 @@ router.get('/post/:id', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       ],
     });
@@ -49,13 +49,42 @@ router.get('/post/:id', async (req, res) => {
   }
 });
 
+router.get('/postquery/:id', async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ['username'],
+        }, {
+          model: Comment,
+          attributes: ['comment'],
+          include: [{
+            model: User,
+            attribbutes: ['username'],
+          }]
+        }
+      ],
+    });
+
+    const post = postData.get({ plain: true });
+
+    res.render('postquery', {
+      ...post,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Use withAuth middleware to prevent access to route
 router.get('/user', withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
     const userData = await User.findOne(req.session.user_username, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Project }],
+      include: [{ model: Post }],
     });
 
     const user = userData.get({ plain: true });
