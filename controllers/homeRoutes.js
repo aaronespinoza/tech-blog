@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const e = require('express');
 const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
@@ -81,12 +82,13 @@ router.get('/postquery/:id', async (req, res) => {
 // Use withAuth middleware to prevent access to route
 router.get('/user', withAuth, async (req, res) => {
   try {
+    console.log("before db call");
     // Find the logged in user based on the session ID
-    const userData = await User.findOne(req.session.user_username, {
+    const userData = await User.findOne({where:{username:req.session.user_username}}, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Post }],
+      //include: [{ model: Post }],
     });
-
+    console.log(userData);
     const user = userData.get({ plain: true });
 
     res.render('user', {

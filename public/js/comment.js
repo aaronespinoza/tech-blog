@@ -14,7 +14,7 @@ const addCommentHandler = async(event) => {
 
         if (response.ok) {
             // If successful, redirect the browser to the profile page
-            document.location.replace('/users');
+            document.location.replace('/user');
         } else {
             alert(response.statusText);
         }
