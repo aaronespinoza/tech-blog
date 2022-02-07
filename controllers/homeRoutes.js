@@ -84,7 +84,8 @@ router.get('/user', withAuth, async (req, res) => {
   try {
     console.log("before db call");
     // Find the logged in user based on the session ID
-    const userData = await User.findOne({where:{username:req.session.user_username}}, {
+    const userData = await User.findOne({
+      where:{username:req.session.user_username}}, {
       attributes: { exclude: ['password'] },
       //include: [{ model: Post }],
     });
